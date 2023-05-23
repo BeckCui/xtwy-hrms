@@ -39,6 +39,7 @@ export default class Dict {
       }
       ps.push(loadDict(this, dictMeta))
     })
+
     return Promise.all(ps)
   }
 

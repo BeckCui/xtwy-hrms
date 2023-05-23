@@ -180,3 +180,21 @@ aside {
     margin-bottom: 10px;
   }
 }
+
+//自定义全局样式
+.view-img-panel {
+
+  > div:first-child {
+    display: none;
+  }
+
+  > div.el-dialog__body {
+    padding: 0px;
+  }
+
+  .img-item {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+}

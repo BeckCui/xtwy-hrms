@@ -8,9 +8,8 @@
     <artifactId>ruoyi</artifactId>
     <version>3.8.5</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>hrms</name>
+    <description>人力资源管理系统</description>
     
     <properties>
         <ruoyi.version>3.8.5</ruoyi.version>

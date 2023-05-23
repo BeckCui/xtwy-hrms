@@ -23,6 +23,12 @@
             <artifactId>ruoyi-common</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.becui.msdb.persist</groupId>
+            <artifactId>msdb-persist-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

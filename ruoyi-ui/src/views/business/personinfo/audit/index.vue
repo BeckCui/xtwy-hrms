@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          审核
+          调整审核
         </div>
       </el-col>
     </el-row>

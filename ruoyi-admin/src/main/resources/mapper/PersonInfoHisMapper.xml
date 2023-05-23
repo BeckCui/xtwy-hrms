@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhl.fin.api.dao.PersonInfoHisDao">
+  <resultMap id="BaseResultMap" type="com.dhl.fin.api.domain.PersonInfoHis">
+    <id column="person_info_his_id" property="id" />
+    <result column="person_info_his_name" property="name" />
+    <result column="person_info_his_sex" property="sex" />
+    <result column="person_info_his_birthday" property="birthday" />
+    <result column="person_info_his_nation" property="nation" />
+    <result column="person_info_his_politic" property="politic" />
+    <result column="person_info_his_blood_type" property="bloodType" />
+    <result column="person_info_his_position" property="position" />
+    <result column="person_info_his_work_date" property="workDate" />
+    <result column="person_info_his_work_year" property="workYear" />
+    <result column="person_info_his_speciality" property="speciality" />
+    <result column="person_info_his_education" property="education" />
+    <result column="person_info_his_status" property="status" />
+    <result column="person_info_his_type" property="type" />
+    <result column="person_info_his_office" property="office" />
+    <result column="person_info_his_salary_level" property="salaryLevel" />
+    <result column="person_info_his_posit_level" property="positLevel" />
+    <result column="person_info_his_work_level" property="workLevel" />
+    <result column="person_info_his_work_level_date" property="workLevelDate" />
+    <result column="person_info_his_posit_grade" property="positGrade" />
+    <result column="person_info_his_posit_grade_date" property="positGradeDate" />
+    <result column="person_info_his_speciality_tech" property="specialityTech" />
+    <result column="person_info_his_speciality_tech_date" property="specialityTechDate" />
+    <result column="person_info_his_remove" property="remove" />
+    <result column="person_info_his_create_time" property="createTime" />
+    <result column="person_info_his_update_time" property="updateTime" />
+    <result column="person_info_his_create_user" property="createUser" />
+    <result column="person_info_his_update_user" property="updateUser" />
+    <association javaType="com.dhl.fin.api.common.domain.AttachFile" property="headPicture">
+      <id column="person_info_his_head_picture_id" property="id" />
+      <result column="head_picture_directory" property="directory" />
+      <result column="head_picture_md5" property="md5" />
+      <result column="head_picture_file_name" property="fileName" />
+      <result column="head_picture_type" property="type" />
+      <result column="head_picture_size" property="size" />
+      <result column="head_picture_store_location" property="storeLocation" />
+      <result column="head_picture_remove" property="remove" />
+      <result column="head_picture_create_time" property="createTime" />
+      <result column="head_picture_update_time" property="updateTime" />
+      <result column="head_picture_create_user" property="createUser" />
+      <result column="head_picture_update_user" property="updateUser" />
+    </association>
+    <collection ofType="com.dhl.fin.api.domain.EducationHis" property="eduHistories">
+      <id column="edu_histories_id" property="id" />
+      <result column="edu_histories_school_name" property="schoolName" />
+      <result column="edu_histories_edu_degree" property="eduDegree" />
+      <result column="edu_histories_edu_year" property="eduYear" />
+      <result column="edu_histories_edu_type" property="eduType" />
+      <result column="edu_histories_profession" property="profession" />
+      <result column="edu_histories_degree" property="degree" />
+      <result column="edu_histories_edu_start_date" property="eduStartDate" />
+      <result column="edu_histories_edu_end_date" property="eduEndDate" />
+      <result column="edu_histories_remove" property="remove" />
+      <result column="edu_histories_create_time" property="createTime" />
+      <result column="edu_histories_update_time" property="updateTime" />
+      <result column="edu_histories_create_user" property="createUser" />
+      <result column="edu_histories_update_user" property="updateUser" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    person_info_his.id as person_info_his_id,person_info_his.create_time as person_info_his_create_time,person_info_his.create_user as person_info_his_create_user,person_info_his.remove as person_info_his_remove,person_info_his.update_time as person_info_his_update_time,person_info_his.update_user as person_info_his_update_user,person_info_his.birthday as person_info_his_birthday,person_info_his.blood_type as person_info_his_blood_type,
+    person_info_his.education as person_info_his_education,person_info_his.name as person_info_his_name,person_info_his.nation as person_info_his_nation,person_info_his.office as person_info_his_office,person_info_his.politic as person_info_his_politic,person_info_his.posit_grade as person_info_his_posit_grade,person_info_his.posit_grade_date as person_info_his_posit_grade_date,person_info_his.posit_level as person_info_his_posit_level,
+    person_info_his.position as person_info_his_position,person_info_his.salary_level as person_info_his_salary_level,person_info_his.sex as person_info_his_sex,person_info_his.speciality as person_info_his_speciality,person_info_his.speciality_tech as person_info_his_speciality_tech,person_info_his.speciality_tech_date as person_info_his_speciality_tech_date,person_info_his.status as person_info_his_status,
+    person_info_his.type as person_info_his_type,person_info_his.work_date as person_info_his_work_date,person_info_his.work_level as person_info_his_work_level,person_info_his.work_level_date as person_info_his_work_level_date,person_info_his.work_year as person_info_his_work_year,person_info_his.head_picture_id as person_info_his_head_picture_id
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="domain.tableAlia == 'head_picture'">
+          ,head_picture.directory as head_picture_directory,head_picture.md5 as head_picture_md5,head_picture.file_name as head_picture_file_name,head_picture.type as head_picture_type,head_picture.size as head_picture_size,head_picture.store_location as head_picture_store_location,head_picture.id as head_picture_id,head_picture.remove as head_picture_remove,head_picture.create_time as head_picture_create_time,head_picture.update_time as head_picture_update_time,head_picture.create_user as head_picture_create_user,head_picture.update_user as head_picture_update_user
+        </if>
+        <if test="domain.tableAlia == 'edu_histories'">
+          ,edu_histories.school_name as edu_histories_school_name,edu_histories.edu_degree as edu_histories_edu_degree,edu_histories.edu_year as edu_histories_edu_year,edu_histories.edu_type as edu_histories_edu_type,edu_histories.profession as edu_histories_profession,edu_histories.degree as edu_histories_degree,edu_histories.edu_start_date as edu_histories_edu_start_date,edu_histories.edu_end_date as edu_histories_edu_end_date,edu_histories.id as edu_histories_id,edu_histories.remove as edu_histories_remove,edu_histories.create_time as edu_histories_create_time,edu_histories.update_time as edu_histories_update_time,edu_histories.create_user as edu_histories_create_user,edu_histories.update_user as edu_histories_update_user
+        </if>
+      </foreach>
+    </if>
+  </sql>
+  <sql id="select_sql">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_person_info_his person_info_his
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on person_info_his.id=${domain.middleTable}_alis.person_info_his_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_person_info_his person_info_his
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on person_info_his.id=${domain.middleTable}_alis.person_info_his_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where person_info_his.id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectPageQuery" resultMap="BaseResultMap">
+    with dd as (select distinct ${orderFields} from t_person_info_his person_info_his 
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on person_info_his.id=${domain.middleTable}_alis.person_info_his_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1 = 1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    limit ${startIndex} , ${length})
+    select <include refid="Base_Column_List" />
+    from t_person_info_his person_info_his
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on person_info_his.id=${domain.middleTable}_alis.person_info_his_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where exists(select 1 from dd where dd.id = person_info_his.id)
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </select>
+  <select id="selectSelective" resultMap="BaseResultMap">
+    <include refid="select_sql" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(1) total from (
+    select  <if test='selectOne'>top 1</if>
+     distinct ${fields}
+    from t_person_info_his person_info_his
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on person_info_his.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on person_info_his.id=${domain.middleTable}_alis.person_info_his_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    ) as s
+  </select>
+  <update id="deleteByPrimaryKey">
+      update t_person_info_his set remove = 1 , update_time=#{updateTime} , update_user=#{updateUser} where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insert" parameterType="com.dhl.fin.api.domain.PersonInfoHis">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_person_info_his (create_time, create_user, remove, 
+      update_time, update_user, birthday, 
+      blood_type, education, name, 
+      nation, office, politic, 
+      posit_grade, posit_grade_date, posit_level, 
+      position, salary_level, sex, 
+      speciality, speciality_tech, speciality_tech_date, 
+      status, type, work_date, 
+      work_level, work_level_date, work_year, 
+      head_picture_id)
+    values (#{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{remove,jdbcType=BIT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{bloodType,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{nation,jdbcType=VARCHAR}, #{office,jdbcType=VARCHAR}, #{politic,jdbcType=VARCHAR}, 
+      #{positGrade,jdbcType=VARCHAR}, #{positGradeDate,jdbcType=DATE}, #{positLevel,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{salaryLevel,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+      #{speciality,jdbcType=VARCHAR}, #{specialityTech,jdbcType=VARCHAR}, #{specialityTechDate,jdbcType=DATE}, 
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{workDate,jdbcType=DATE}, 
+      #{workLevel,jdbcType=VARCHAR}, #{workLevelDate,jdbcType=DATE}, #{workYear,jdbcType=INTEGER}, 
+    #{headPicture.id,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhl.fin.api.domain.PersonInfoHis">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_person_info_his
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="remove != null">
+        remove,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="bloodType != null">
+        blood_type,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="office != null">
+        office,
+      </if>
+      <if test="politic != null">
+        politic,
+      </if>
+      <if test="positGrade != null">
+        posit_grade,
+      </if>
+      <if test="positGradeDate != null">
+        posit_grade_date,
+      </if>
+      <if test="positLevel != null">
+        posit_level,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="salaryLevel != null">
+        salary_level,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="speciality != null">
+        speciality,
+      </if>
+      <if test="specialityTech != null">
+        speciality_tech,
+      </if>
+      <if test="specialityTechDate != null">
+        speciality_tech_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="workDate != null">
+        work_date,
+      </if>
+      <if test="workLevel != null">
+        work_level,
+      </if>
+      <if test="workLevelDate != null">
+        work_level_date,
+      </if>
+      <if test="workYear != null">
+        work_year,
+      </if>
+      <if test="headPicture != null and headPicture.id != null">
+        head_picture_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="remove != null">
+        #{remove,jdbcType=BIT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="bloodType != null">
+        #{bloodType,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null">
+        #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="politic != null">
+        #{politic,jdbcType=VARCHAR},
+      </if>
+      <if test="positGrade != null">
+        #{positGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="positGradeDate != null">
+        #{positGradeDate,jdbcType=DATE},
+      </if>
+      <if test="positLevel != null">
+        #{positLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryLevel != null">
+        #{salaryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="speciality != null">
+        #{speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="specialityTech != null">
+        #{specialityTech,jdbcType=VARCHAR},
+      </if>
+      <if test="specialityTechDate != null">
+        #{specialityTechDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="workDate != null">
+        #{workDate,jdbcType=DATE},
+      </if>
+      <if test="workLevel != null">
+        #{workLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="workLevelDate != null">
+        #{workLevelDate,jdbcType=DATE},
+      </if>
+      <if test="workYear != null">
+        #{workYear,jdbcType=INTEGER},
+      </if>
+      <if test="headPicture != null and headPicture.id != null">
+        #{headPicture.id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update t_person_info_his
+    <set>
+      <if test="domain.createTime != null ">
+        create_time = #{domain.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.createUser != null ">
+        create_user = #{domain.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.remove != null ">
+        remove = #{domain.remove,jdbcType=BIT},
+      </if>
+      <if test="domain.updateTime != null ">
+        update_time = #{domain.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.updateUser != null ">
+        update_user = #{domain.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.birthday != null ">
+        birthday = #{domain.birthday,jdbcType=DATE},
+      </if>
+      <if test="domain.bloodType != null ">
+        blood_type = #{domain.bloodType,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.education != null ">
+        education = #{domain.education,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.name != null ">
+        name = #{domain.name,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.nation != null ">
+        nation = #{domain.nation,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.office != null ">
+        office = #{domain.office,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.politic != null ">
+        politic = #{domain.politic,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.positGrade != null ">
+        posit_grade = #{domain.positGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.positGradeDate != null ">
+        posit_grade_date = #{domain.positGradeDate,jdbcType=DATE},
+      </if>
+      <if test="domain.positLevel != null ">
+        posit_level = #{domain.positLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.position != null ">
+        position = #{domain.position,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.salaryLevel != null ">
+        salary_level = #{domain.salaryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.sex != null ">
+        sex = #{domain.sex,jdbcType=CHAR},
+      </if>
+      <if test="domain.speciality != null ">
+        speciality = #{domain.speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.specialityTech != null ">
+        speciality_tech = #{domain.specialityTech,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.specialityTechDate != null ">
+        speciality_tech_date = #{domain.specialityTechDate,jdbcType=DATE},
+      </if>
+      <if test="domain.status != null ">
+        status = #{domain.status,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.type != null ">
+        type = #{domain.type,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.workDate != null ">
+        work_date = #{domain.workDate,jdbcType=DATE},
+      </if>
+      <if test="domain.workLevel != null ">
+        work_level = #{domain.workLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.workLevelDate != null ">
+        work_level_date = #{domain.workLevelDate,jdbcType=DATE},
+      </if>
+      <if test="domain.workYear != null ">
+        work_year = #{domain.workYear,jdbcType=INTEGER},
+      </if>
+      <if test="domain.headPicture != null  and domain.headPicture.id != null ">
+        head_picture_id = #{domain.headPicture.id,jdbcType=BIGINT},
+      </if>
+    </set>
+    <trim prefix="where" suffixOverrides="and">
+      <foreach collection="query.whereCondition" item="condition">
+         ${condition}
+      </foreach>
+    </trim>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhl.fin.api.domain.PersonInfoHis">
+    update t_person_info_his
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      remove = #{remove,jdbcType=BIT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      blood_type = #{bloodType,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      office = #{office,jdbcType=VARCHAR},
+      politic = #{politic,jdbcType=VARCHAR},
+      posit_grade = #{positGrade,jdbcType=VARCHAR},
+      posit_grade_date = #{positGradeDate,jdbcType=DATE},
+      posit_level = #{positLevel,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      salary_level = #{salaryLevel,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      speciality = #{speciality,jdbcType=VARCHAR},
+      speciality_tech = #{specialityTech,jdbcType=VARCHAR},
+      speciality_tech_date = #{specialityTechDate,jdbcType=DATE},
+      status = #{status,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=DATE},
+      work_level = #{workLevel,jdbcType=VARCHAR},
+      work_level_date = #{workLevelDate,jdbcType=DATE},
+      work_year = #{workYear,jdbcType=INTEGER},
+      head_picture_id = #{headPicture.id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectOne" resultMap="BaseResultMap">
+    <include refid="select_sql"/>
+  </select>
+</mapper>

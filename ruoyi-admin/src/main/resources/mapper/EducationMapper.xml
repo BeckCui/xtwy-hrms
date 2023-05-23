@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhl.fin.api.dao.EducationDao">
+  <resultMap id="BaseResultMap" type="com.dhl.fin.api.domain.Education">
+    <id column="education_id" property="id" />
+    <result column="education_school_name" property="schoolName" />
+    <result column="education_edu_degree" property="eduDegree" />
+    <result column="education_edu_year" property="eduYear" />
+    <result column="education_edu_type" property="eduType" />
+    <result column="education_profession" property="profession" />
+    <result column="education_degree" property="degree" />
+    <result column="education_edu_start_date" property="eduStartDate" />
+    <result column="education_edu_end_date" property="eduEndDate" />
+    <result column="education_remove" property="remove" />
+    <result column="education_create_time" property="createTime" />
+    <result column="education_update_time" property="updateTime" />
+    <result column="education_create_user" property="createUser" />
+    <result column="education_update_user" property="updateUser" />
+    <association javaType="com.dhl.fin.api.domain.PersonInfo" property="personInfo">
+      <id column="education_person_info_id" property="id" />
+      <result column="person_info_name" property="name" />
+      <result column="person_info_sex" property="sex" />
+      <result column="person_info_birthday" property="birthday" />
+      <result column="person_info_nation" property="nation" />
+      <result column="person_info_politic" property="politic" />
+      <result column="person_info_blood_type" property="bloodType" />
+      <result column="person_info_position" property="position" />
+      <result column="person_info_work_date" property="workDate" />
+      <result column="person_info_work_year" property="workYear" />
+      <result column="person_info_speciality" property="speciality" />
+      <result column="person_info_education" property="education" />
+      <result column="person_info_status" property="status" />
+      <result column="person_info_type" property="type" />
+      <result column="person_info_office" property="office" />
+      <result column="person_info_salary_level" property="salaryLevel" />
+      <result column="person_info_posit_level" property="positLevel" />
+      <result column="person_info_work_level" property="workLevel" />
+      <result column="person_info_work_level_date" property="workLevelDate" />
+      <result column="person_info_posit_grade" property="positGrade" />
+      <result column="person_info_posit_grade_date" property="positGradeDate" />
+      <result column="person_info_speciality_tech" property="specialityTech" />
+      <result column="person_info_speciality_tech_date" property="specialityTechDate" />
+      <result column="person_info_remove" property="remove" />
+      <result column="person_info_create_time" property="createTime" />
+      <result column="person_info_update_time" property="updateTime" />
+      <result column="person_info_create_user" property="createUser" />
+      <result column="person_info_update_user" property="updateUser" />
+    </association>
+    <collection ofType="com.dhl.fin.api.common.domain.AttachFile" property="attachFiles">
+      <id column="attach_files_id" property="id" />
+      <result column="attach_files_directory" property="directory" />
+      <result column="attach_files_md5" property="md5" />
+      <result column="attach_files_file_name" property="fileName" />
+      <result column="attach_files_type" property="type" />
+      <result column="attach_files_size" property="size" />
+      <result column="attach_files_store_location" property="storeLocation" />
+      <result column="attach_files_remove" property="remove" />
+      <result column="attach_files_create_time" property="createTime" />
+      <result column="attach_files_update_time" property="updateTime" />
+      <result column="attach_files_create_user" property="createUser" />
+      <result column="attach_files_update_user" property="updateUser" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    education.id as education_id,education.create_time as education_create_time,education.create_user as education_create_user,education.remove as education_remove,education.update_time as education_update_time,education.update_user as education_update_user,education.degree as education_degree,education.edu_end_date as education_edu_end_date,
+    education.edu_start_date as education_edu_start_date,education.edu_type as education_edu_type,education.edu_year as education_edu_year,education.edu_degree as education_edu_degree,education.profession as education_profession,education.school_name as education_school_name,education.person_info_id as education_person_info_id
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="domain.tableAlia == 'person_info'">
+          ,person_info.name as person_info_name,person_info.sex as person_info_sex,person_info.birthday as person_info_birthday,person_info.nation as person_info_nation,person_info.politic as person_info_politic,person_info.blood_type as person_info_blood_type,person_info.position as person_info_position,person_info.work_date as person_info_work_date,person_info.work_year as person_info_work_year,person_info.speciality as person_info_speciality,person_info.education as person_info_education,person_info.status as person_info_status,person_info.type as person_info_type,person_info.office as person_info_office,person_info.salary_level as person_info_salary_level,person_info.posit_level as person_info_posit_level,person_info.work_level as person_info_work_level,person_info.work_level_date as person_info_work_level_date,person_info.posit_grade as person_info_posit_grade,person_info.posit_grade_date as person_info_posit_grade_date,person_info.speciality_tech as person_info_speciality_tech,person_info.speciality_tech_date as person_info_speciality_tech_date,person_info.id as person_info_id,person_info.remove as person_info_remove,person_info.create_time as person_info_create_time,person_info.update_time as person_info_update_time,person_info.create_user as person_info_create_user,person_info.update_user as person_info_update_user
+        </if>
+        <if test="domain.tableAlia == 'attach_files'">
+          ,attach_files.directory as attach_files_directory,attach_files.md5 as attach_files_md5,attach_files.file_name as attach_files_file_name,attach_files.type as attach_files_type,attach_files.size as attach_files_size,attach_files.store_location as attach_files_store_location,attach_files.id as attach_files_id,attach_files.remove as attach_files_remove,attach_files.create_time as attach_files_create_time,attach_files.update_time as attach_files_update_time,attach_files.create_user as attach_files_create_user,attach_files.update_user as attach_files_update_user
+        </if>
+      </foreach>
+    </if>
+  </sql>
+  <sql id="select_sql">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_education education
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on education.id=${domain.middleTable}_alis.education_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_education education
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on education.id=${domain.middleTable}_alis.education_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where education.id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectPageQuery" resultMap="BaseResultMap">
+    with dd as (select distinct ${orderFields} from t_education education 
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on education.id=${domain.middleTable}_alis.education_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1 = 1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    limit ${startIndex} , ${length})
+    select <include refid="Base_Column_List" />
+    from t_education education
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on education.id=${domain.middleTable}_alis.education_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where exists(select 1 from dd where dd.id = education.id)
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </select>
+  <select id="selectSelective" resultMap="BaseResultMap">
+    <include refid="select_sql" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(1) total from (
+    select  <if test='selectOne'>top 1</if>
+     distinct ${fields}
+    from t_education education
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on education.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on education.id=${domain.middleTable}_alis.education_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    ) as s
+  </select>
+  <update id="deleteByPrimaryKey">
+      update t_education set remove = 1 , update_time=#{updateTime} , update_user=#{updateUser} where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insert" parameterType="com.dhl.fin.api.domain.Education">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_education (create_time, create_user, remove, 
+      update_time, update_user, degree, 
+      edu_end_date, edu_start_date, edu_type, 
+      edu_year, edu_degree, profession, 
+      school_name, person_info_id)
+    values (#{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{remove,jdbcType=BIT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, 
+      #{eduEndDate,jdbcType=DATE}, #{eduStartDate,jdbcType=DATE}, #{eduType,jdbcType=VARCHAR}, 
+      #{eduYear,jdbcType=VARCHAR}, #{eduDegree,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, 
+    #{schoolName,jdbcType=VARCHAR},#{personInfo.id,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhl.fin.api.domain.Education">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_education
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="remove != null">
+        remove,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="degree != null">
+        degree,
+      </if>
+      <if test="eduEndDate != null">
+        edu_end_date,
+      </if>
+      <if test="eduStartDate != null">
+        edu_start_date,
+      </if>
+      <if test="eduType != null">
+        edu_type,
+      </if>
+      <if test="eduYear != null">
+        edu_year,
+      </if>
+      <if test="eduDegree != null">
+        edu_degree,
+      </if>
+      <if test="profession != null">
+        profession,
+      </if>
+      <if test="schoolName != null">
+        school_name,
+      </if>
+      <if test="personInfo != null and personInfo.id != null">
+        person_info_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="remove != null">
+        #{remove,jdbcType=BIT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null">
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="eduEndDate != null">
+        #{eduEndDate,jdbcType=DATE},
+      </if>
+      <if test="eduStartDate != null">
+        #{eduStartDate,jdbcType=DATE},
+      </if>
+      <if test="eduType != null">
+        #{eduType,jdbcType=VARCHAR},
+      </if>
+      <if test="eduYear != null">
+        #{eduYear,jdbcType=VARCHAR},
+      </if>
+      <if test="eduDegree != null">
+        #{eduDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null">
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null">
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="personInfo != null and personInfo.id != null">
+        #{personInfo.id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update t_education
+    <set>
+      <if test="domain.createTime != null ">
+        create_time = #{domain.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.createUser != null ">
+        create_user = #{domain.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.remove != null ">
+        remove = #{domain.remove,jdbcType=BIT},
+      </if>
+      <if test="domain.updateTime != null ">
+        update_time = #{domain.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.updateUser != null ">
+        update_user = #{domain.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.degree != null ">
+        degree = #{domain.degree,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.eduEndDate != null ">
+        edu_end_date = #{domain.eduEndDate,jdbcType=DATE},
+      </if>
+      <if test="domain.eduStartDate != null ">
+        edu_start_date = #{domain.eduStartDate,jdbcType=DATE},
+      </if>
+      <if test="domain.eduType != null ">
+        edu_type = #{domain.eduType,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.eduYear != null ">
+        edu_year = #{domain.eduYear,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.eduDegree != null ">
+        edu_degree = #{domain.eduDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.profession != null ">
+        profession = #{domain.profession,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.schoolName != null ">
+        school_name = #{domain.schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.personInfo != null  and domain.personInfo.id != null ">
+        person_info_id = #{domain.personInfo.id,jdbcType=BIGINT},
+      </if>
+    </set>
+    <trim prefix="where" suffixOverrides="and">
+      <foreach collection="query.whereCondition" item="condition">
+         ${condition}
+      </foreach>
+    </trim>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhl.fin.api.domain.Education">
+    update t_education
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      remove = #{remove,jdbcType=BIT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=VARCHAR},
+      edu_end_date = #{eduEndDate,jdbcType=DATE},
+      edu_start_date = #{eduStartDate,jdbcType=DATE},
+      edu_type = #{eduType,jdbcType=VARCHAR},
+      edu_year = #{eduYear,jdbcType=VARCHAR},
+      edu_degree = #{eduDegree,jdbcType=VARCHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      school_name = #{schoolName,jdbcType=VARCHAR},
+      person_info_id = #{personInfo.id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insertEducationAttachFiles">
+    insert into t_education_file(education_id,file_id) values(#{educationId},#{fileId})
+  </insert>
+  <delete id="deleteEducationAttachFiles">
+    delete from t_education_file where education_id=#{educationId} and file_id=#{fileId};
+  </delete>
+  <delete id="deleteEducationAttachFilesMiddle">
+    delete from t_education_file where education_id=#{educationId}
+  </delete>
+  <select id="selectOne" resultMap="BaseResultMap">
+    <include refid="select_sql"/>
+  </select>
+</mapper>

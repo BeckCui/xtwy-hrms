@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          评分
+          考核评分
         </div>
       </el-col>
     </el-row>

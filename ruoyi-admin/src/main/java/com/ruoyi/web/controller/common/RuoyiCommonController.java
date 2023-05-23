@@ -28,9 +28,9 @@ import com.ruoyi.framework.config.ServerConfig;
  */
 @RestController
 @RequestMapping("/common")
-public class CommonController
+public class RuoyiCommonController
 {
-    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
+    private static final Logger log = LoggerFactory.getLogger(RuoyiCommonController.class);
 
     @Autowired
     private ServerConfig serverConfig;

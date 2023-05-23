@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhl.fin.api.dao.ApplyRecordDao">
+  <resultMap id="BaseResultMap" type="com.dhl.fin.api.domain.ApplyRecord">
+    <id column="apply_record_id" property="id" />
+    <result column="apply_record_apply_num" property="applyNum" />
+    <result column="apply_record_apply_status" property="applyStatus" />
+    <result column="apply_record_apply_peron" property="applyPeron" />
+    <result column="apply_record_apply_office" property="applyOffice" />
+    <result column="apply_record_audit_person" property="auditPerson" />
+    <result column="apply_record_audit_date" property="auditDate" />
+    <result column="apply_record_audit_office" property="auditOffice" />
+    <result column="apply_record_remove" property="remove" />
+    <result column="apply_record_create_time" property="createTime" />
+    <result column="apply_record_update_time" property="updateTime" />
+    <result column="apply_record_create_user" property="createUser" />
+    <result column="apply_record_update_user" property="updateUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    apply_record.id as apply_record_id,apply_record.create_time as apply_record_create_time,apply_record.create_user as apply_record_create_user,apply_record.remove as apply_record_remove,apply_record.update_time as apply_record_update_time,apply_record.update_user as apply_record_update_user,apply_record.apply_num as apply_record_apply_num,apply_record.apply_office as apply_record_apply_office,
+    apply_record.apply_peron as apply_record_apply_peron,apply_record.apply_status as apply_record_apply_status,apply_record.audit_date as apply_record_audit_date,apply_record.audit_office as apply_record_audit_office,apply_record.audit_person as apply_record_audit_person,apply_record.person_his_id as apply_record_person_his_id
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="domain.tableAlia == 'person_his'">
+          ,
+        </if>
+      </foreach>
+    </if>
+  </sql>
+  <sql id="select_sql">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_apply_record apply_record
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on apply_record.id=${domain.middleTable}_alis.apply_record_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select  <if test='selectOne'>top 1</if>
+    <include refid="Base_Column_List" />
+    from t_apply_record apply_record
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on apply_record.id=${domain.middleTable}_alis.apply_record_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where apply_record.id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectPageQuery" resultMap="BaseResultMap">
+    with dd as (select distinct ${orderFields} from t_apply_record apply_record 
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on apply_record.id=${domain.middleTable}_alis.apply_record_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1 = 1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    limit ${startIndex} , ${length})
+    select <include refid="Base_Column_List" />
+    from t_apply_record apply_record
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on apply_record.id=${domain.middleTable}_alis.apply_record_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where exists(select 1 from dd where dd.id = apply_record.id)
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+  </select>
+  <select id="selectSelective" resultMap="BaseResultMap">
+    <include refid="select_sql" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(1) total from (
+    select  <if test='selectOne'>top 1</if>
+     distinct ${fields}
+    from t_apply_record apply_record
+    <if test="joinMap != null">
+      <foreach collection="joinMap" index="index" item="domain">
+        <if test="!domain.isM2M and !domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.${domain.tableAlia}_id = ${domain.tableAlia}.id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isO2M">
+          left join t_${domain.tableName} ${domain.tableAlia} on apply_record.id = ${domain.tableAlia}.${domain.joinField}_id and ${domain.tableAlia}.remove = 0
+        </if>
+        <if test="domain.isM2M">
+          left join ${domain.middleTable} ${domain.middleTable}_alis on apply_record.id=${domain.middleTable}_alis.apply_record_id left join t_${domain.tableName} ${domain.tableAlia} on ${domain.tableAlia}.id = ${domain.middleTable}_alis.${domain.invertJoinId} and ${domain.tableAlia}.remove = 0
+        </if>
+      </foreach>
+    </if>
+    where 1=1 
+    <if test="whereCondition != null">
+      <foreach collection="whereCondition" index="index" item="condition">
+        and ${condition}
+      </foreach>
+    </if>
+    <if test="orderCondition != null">
+      <trim prefix="order by" suffixOverrides=",">
+        <foreach collection="orderCondition" index="index" item="condition">
+           ${condition},
+        </foreach>
+      </trim>
+    </if>
+    ) as s
+  </select>
+  <update id="deleteByPrimaryKey">
+      update t_apply_record set remove = 1 , update_time=#{updateTime} , update_user=#{updateUser} where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insert" parameterType="com.dhl.fin.api.domain.ApplyRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apply_record (create_time, create_user, remove, 
+      update_time, update_user, apply_num, 
+      apply_office, apply_peron, apply_status, 
+      audit_date, audit_office, audit_person, 
+      person_his_id)
+    values (#{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{remove,jdbcType=BIT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{applyNum,jdbcType=VARCHAR}, 
+      #{applyOffice,jdbcType=VARCHAR}, #{applyPeron,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, 
+      #{auditDate,jdbcType=VARCHAR}, #{auditOffice,jdbcType=VARCHAR}, #{auditPerson,jdbcType=VARCHAR}, 
+    #{personHis.id,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhl.fin.api.domain.ApplyRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apply_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="remove != null">
+        remove,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="applyNum != null">
+        apply_num,
+      </if>
+      <if test="applyOffice != null">
+        apply_office,
+      </if>
+      <if test="applyPeron != null">
+        apply_peron,
+      </if>
+      <if test="applyStatus != null">
+        apply_status,
+      </if>
+      <if test="auditDate != null">
+        audit_date,
+      </if>
+      <if test="auditOffice != null">
+        audit_office,
+      </if>
+      <if test="auditPerson != null">
+        audit_person,
+      </if>
+      <if test="personHis != null and personHis.id != null">
+        person_his_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="remove != null">
+        #{remove,jdbcType=BIT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNum != null">
+        #{applyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="applyOffice != null">
+        #{applyOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="applyPeron != null">
+        #{applyPeron,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null">
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null">
+        #{auditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="auditOffice != null">
+        #{auditOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="auditPerson != null">
+        #{auditPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="personHis != null and personHis.id != null">
+        #{personHis.id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update t_apply_record
+    <set>
+      <if test="domain.createTime != null ">
+        create_time = #{domain.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.createUser != null ">
+        create_user = #{domain.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.remove != null ">
+        remove = #{domain.remove,jdbcType=BIT},
+      </if>
+      <if test="domain.updateTime != null ">
+        update_time = #{domain.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain.updateUser != null ">
+        update_user = #{domain.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.applyNum != null ">
+        apply_num = #{domain.applyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.applyOffice != null ">
+        apply_office = #{domain.applyOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.applyPeron != null ">
+        apply_peron = #{domain.applyPeron,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.applyStatus != null ">
+        apply_status = #{domain.applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.auditDate != null ">
+        audit_date = #{domain.auditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.auditOffice != null ">
+        audit_office = #{domain.auditOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.auditPerson != null ">
+        audit_person = #{domain.auditPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="domain.personHis != null  and domain.personHis.id != null ">
+        person_his_id = #{domain.personHis.id,jdbcType=BIGINT},
+      </if>
+    </set>
+    <trim prefix="where" suffixOverrides="and">
+      <foreach collection="query.whereCondition" item="condition">
+         ${condition}
+      </foreach>
+    </trim>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhl.fin.api.domain.ApplyRecord">
+    update t_apply_record
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      remove = #{remove,jdbcType=BIT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      apply_num = #{applyNum,jdbcType=VARCHAR},
+      apply_office = #{applyOffice,jdbcType=VARCHAR},
+      apply_peron = #{applyPeron,jdbcType=VARCHAR},
+      apply_status = #{applyStatus,jdbcType=VARCHAR},
+      audit_date = #{auditDate,jdbcType=VARCHAR},
+      audit_office = #{auditOffice,jdbcType=VARCHAR},
+      audit_person = #{auditPerson,jdbcType=VARCHAR},
+      person_his_id = #{personHis.id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectOne" resultMap="BaseResultMap">
+    <include refid="select_sql"/>
+  </select>
+</mapper>
